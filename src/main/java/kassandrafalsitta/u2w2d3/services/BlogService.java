@@ -3,6 +3,7 @@ package kassandrafalsitta.u2w2d3.services;
 import kassandrafalsitta.u2w2d3.entities.Author;
 import kassandrafalsitta.u2w2d3.entities.Blog;
 import kassandrafalsitta.u2w2d3.entities.BlogPayload;
+import kassandrafalsitta.u2w2d3.exceptions.BadRequestException;
 import kassandrafalsitta.u2w2d3.exceptions.NotFoundException;
 import kassandrafalsitta.u2w2d3.repositories.AuthorsRepository;
 import kassandrafalsitta.u2w2d3.repositories.BlogsRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,6 +31,11 @@ public class BlogService {
     }
 
     public Blog saveBlog(BlogPayload body) {
+        Optional<Blog> titleBlog = blogsRepository.findByTitle(body.getTitle());
+        Optional<Blog> contentBlog = blogsRepository.findByContent(body.getContent());
+        if (titleBlog.isPresent() && contentBlog.isPresent()) {
+            throw new BadRequestException("Il titolo " + body.getTitle() + " e il contenuto " + body.getContent() + " sono già in uso!");
+        }
         Author author = authorsRepository.findById(body.getAuthorId()).orElseThrow(() -> new NotFoundException(body.getAuthorId()));
         Blog blog = new Blog(body.getCategory(), body.getTitle(), body.getCover(), body.getContent(), body.getReadingTime(), author);
         return this.blogsRepository.save(blog);
