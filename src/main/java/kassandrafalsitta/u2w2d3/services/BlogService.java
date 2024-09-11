@@ -45,6 +45,7 @@ public class BlogService {
         found.setReadingTime(updatedBlog.getReadingTime());
         found.setCover(updatedBlog.getCover());
         found.setContent(updatedBlog.getContent());
+
         Author author = authorsRepository.findById(updatedBlog.getAuthorId()).orElseThrow(() -> new NotFoundException(updatedBlog.getAuthorId()));
         found.setAuthorId(author);
         return this.blogsRepository.save(found);
