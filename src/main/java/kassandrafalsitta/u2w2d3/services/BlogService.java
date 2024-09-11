@@ -1,12 +1,13 @@
 package kassandrafalsitta.u2w2d3.services;
 
-import com.example.demo.entities.Blog;
-import com.example.demo.exceptions.NotFoundException;
+import kassandrafalsitta.u2w2d3.entities.Blog;
+import kassandrafalsitta.u2w2d3.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class BlogService {
@@ -18,18 +19,17 @@ public class BlogService {
 
     public Blog saveBlog(Blog body) {
         Random r = new Random();
-        body.setId(r.nextInt(99999, 999999999));
         this.blogsList.add(body);
         return body;
     }
 
-    public Blog findById(int blogId) {
+    public Blog findById(UUID blogId) {
         return this.blogsList.stream()
                 .filter(blog -> blog.getId() == blogId).findFirst()
                 .orElseThrow(() -> new NotFoundException(blogId));
     }
 
-    public Blog findByIdAndUpdate(int blogId, Blog updatedBlog) {
+    public Blog findByIdAndUpdate(UUID blogId, Blog updatedBlog) {
         Blog found = findById(blogId);
         found.setCategory(updatedBlog.getCategory());
         found.setTitle(updatedBlog.getTitle());
@@ -40,7 +40,7 @@ public class BlogService {
         return found;
     }
 
-    public void findByIdAndDelete(int blogId) {
+    public void findByIdAndDelete(UUID blogId) {
         this.blogsList.remove(findById(blogId));
     }
 }

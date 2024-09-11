@@ -1,12 +1,13 @@
 package kassandrafalsitta.u2w2d3.services;
 
-import com.example.demo.entities.Author;
-import com.example.demo.exceptions.NotFoundException;
+import kassandrafalsitta.u2w2d3.entities.Author;
+import kassandrafalsitta.u2w2d3.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class AuthorService {
@@ -18,19 +19,18 @@ public class AuthorService {
 
     public Author saveAuthor(Author body) {
         Random r = new Random();
-        body.setId(r.nextInt(99999, 999999999));
         body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName() + "+" + body.getSurname());
         this.authorsList.add(body);
         return body;
     }
 
-    public Author findById(int authorId) {
+    public Author findById(UUID authorId) {
         return this.authorsList.stream()
                 .filter(author -> author.getId() == authorId).findFirst()
                 .orElseThrow(() -> new NotFoundException(authorId));
     }
 
-    public Author findByIdAndUpdate(int authorId, Author updatedAuthor) {
+    public Author findByIdAndUpdate(UUID authorId, Author updatedAuthor) {
         Author found = findById(authorId);
         found.setName(updatedAuthor.getName());
         found.setSurname(updatedAuthor.getSurname());
@@ -41,7 +41,7 @@ public class AuthorService {
         return found;
     }
 
-    public void findByIdAndDelete(int authorId) {
+    public void findByIdAndDelete(UUID authorId) {
         this.authorsList.remove(findById(authorId));
     }
 }
