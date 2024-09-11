@@ -22,7 +22,7 @@ public class BlogService {
     @Autowired
     private BlogsRepository blogsRepository;
     @Autowired
-    private AuthorsRepository authorsRepository;
+    private AuthorService authorsService;
 
     public Page<Blog> findAll(int page, int size, String sortBy) {
         if (page > 100) page = 100;
@@ -36,7 +36,7 @@ public class BlogService {
         if (titleBlog.isPresent() && contentBlog.isPresent()) {
             throw new BadRequestException("Il titolo " + body.getTitle() + " e il contenuto " + body.getContent() + " sono già in uso!");
         }
-        Author author = authorsRepository.findById(body.getAuthorId()).orElseThrow(() -> new NotFoundException(body.getAuthorId()));
+        Author author = authorsService.findById(body.getAuthorId())
         Blog blog = new Blog(body.getCategory(), body.getTitle(), body.getCover(), body.getContent(), body.getReadingTime(), author);
         return this.blogsRepository.save(blog);
     }
@@ -53,7 +53,7 @@ public class BlogService {
         found.setCover(updatedBlog.getCover());
         found.setContent(updatedBlog.getContent());
 
-        Author author = authorsRepository.findById(updatedBlog.getAuthorId()).orElseThrow(() -> new NotFoundException(updatedBlog.getAuthorId()));
+        Author author = authorsService.findById(updatedBlog.getAuthorId());
         found.setAuthorId(author);
         return this.blogsRepository.save(found);
     }
