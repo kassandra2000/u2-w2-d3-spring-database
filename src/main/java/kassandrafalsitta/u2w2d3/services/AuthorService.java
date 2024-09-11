@@ -2,6 +2,8 @@ package kassandrafalsitta.u2w2d3.services;
 
 import kassandrafalsitta.u2w2d3.entities.Author;
 import kassandrafalsitta.u2w2d3.exceptions.NotFoundException;
+import kassandrafalsitta.u2w2d3.repositories.AuthorsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +13,9 @@ import java.util.UUID;
 
 @Service
 public class AuthorService {
+    @Autowired
+    private AuthorsRepository authorsRepository;
+
     private final List<Author> authorsList = new ArrayList<>();
 
     public List<Author> findAll() {
@@ -18,7 +23,6 @@ public class AuthorService {
     }
 
     public Author saveAuthor(Author body) {
-        Random r = new Random();
         body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName() + "+" + body.getSurname());
         this.authorsList.add(body);
         return body;

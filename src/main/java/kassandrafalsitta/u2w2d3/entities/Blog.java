@@ -1,9 +1,6 @@
 package kassandrafalsitta.u2w2d3.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -25,5 +22,9 @@ public class Blog {
     private String cover;
     private String content;
     private double readingTime;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author authorId;
+
 
 }

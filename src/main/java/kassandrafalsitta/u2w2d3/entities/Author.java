@@ -1,12 +1,10 @@
 package kassandrafalsitta.u2w2d3.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -25,6 +23,7 @@ public class Author {
     private String email;
     private LocalDate dateOfBirth;
     private String avatar;
+
 
     //costruttore
     public Author(String name, String surname, String email, LocalDate dateOfBirth) {

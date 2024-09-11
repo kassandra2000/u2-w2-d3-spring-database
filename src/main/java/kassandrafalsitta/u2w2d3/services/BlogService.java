@@ -2,6 +2,9 @@ package kassandrafalsitta.u2w2d3.services;
 
 import kassandrafalsitta.u2w2d3.entities.Blog;
 import kassandrafalsitta.u2w2d3.exceptions.NotFoundException;
+import kassandrafalsitta.u2w2d3.repositories.AuthorsRepository;
+import kassandrafalsitta.u2w2d3.repositories.BlogsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +14,9 @@ import java.util.UUID;
 
 @Service
 public class BlogService {
+    @Autowired
+    private BlogsRepository blogsRepository;
+
     private final List<Blog> blogsList = new ArrayList<>();
 
     public List<Blog> findAll() {
